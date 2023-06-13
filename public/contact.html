@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contact Simin</h1>
+      <p>This is the contact page.</p>
+      <a href="/" class="button">Go to Home Page</a>
+      <a href="/about" class="button">Go to About Page</a>
+      <section class="contact-form">
+        <h2>Contact Form</h2>
+        <form id="contactForm">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            class="contact-input"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            class="contact-input"
+            required
+          />
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            class="contact-textarea"
+            required
+          ></textarea>
+          <button type="submit" class="contact-submit">Send Message</button>
+        </form>
+      </section>
+    </div>
+
+    <script>
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var form = event.target;
+          var formData = {
+            name: form.querySelector('input[name="name"]').value,
+            email: form.querySelector('input[name="email"]').value,
+            message: form.querySelector('textarea[name="message"]').value,
+          };
+
+          fetch("/save-contact", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then(function (response) {
+              console.log(response);
+              return response.json();
+            })
+            .then(function (data) {
+              alert(data.message);
+              form.reset();
+            })
+           .catch(function (error) {
+              console.error(error);
+             alert("An error occurred while submitting the form");
+            });
+        });
+    </script>
+  </body>
+</html>
